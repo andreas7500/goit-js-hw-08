@@ -1,20 +1,29 @@
 import throttle from 'lodash.throttle';
 const form = document.querySelector('.feedback-form');
+const emailInput = document.querySelector('.feedback-form input');
 const VALUE_KEY = 'feedback-form-state';
+const textInput = document.querySelector('.feedback-form textarea');
+
 form.addEventListener('input', throttle(onFormData, 500));
 form.addEventListener('submit', onSubmitForm);
 
 // hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 popularMessage();
-const formData = {};
+
 function onFormData(e) {
-  formData[e.target.name] = e.target.value;
-  localStorage.setItem(VALUE_KEY, JSON.stringify(formData));
+  e.preventDefault();
+  const formData = form.elements;
+  const email = formData.email.value;
+  const message = formData.message.value;
+  const toSave = { email, message };
+
+  localStorage.setItem(VALUE_KEY, JSON.stringify(toSave));
 }
 
 function onSubmitForm(e) {
   console.log(JSON.parse(localStorage.getItem(VALUE_KEY)));
   e.preventDefault();
+
   const {
     elements: { email, message },
   } = e.currentTarget;
@@ -28,11 +37,10 @@ function onSubmitForm(e) {
 
 function popularMessage() {
   const saveMessage = JSON.parse(localStorage.getItem(VALUE_KEY));
-  const message = document.querySelector('.feedback-form textarea');
-  const email = document.querySelector('.feedback-form input');
+
   if (saveMessage) {
     console.log(saveMessage);
-    message.value = saveMessage.message;
-    email.value = saveMessage.email;
+    textInput.value = saveMessage.message;
+    emailInput.value = saveMessage.email;
   }
 }
