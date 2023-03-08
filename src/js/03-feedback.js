@@ -12,12 +12,14 @@ popularMessage();
 
 function onFormData(e) {
   e.preventDefault();
-  const formData = form.elements;
-  const email = formData.email.value;
-  const message = formData.message.value;
-  const toSave = { email, message };
+  // const formData = form.elements;
+  // const email = formData.email.value;
+  // const message = formData.message.value;
+  // const toSave = { email, message };
+  const { email, message } = form.elements;
+  dataForm = { email: email.value, message: message.value };
 
-  localStorage.setItem(VALUE_KEY, JSON.stringify(toSave));
+  localStorage.setItem(VALUE_KEY, JSON.stringify(dataForm));
 }
 
 function onSubmitForm(e) {
